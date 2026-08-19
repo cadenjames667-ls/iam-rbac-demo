@@ -1,14 +1,11 @@
-<!doctype html>
-<html>
-<head><title>Accounts</title></head>
-<body>
-  <h1>Accounts</h1>
-  <table border="1" cellpadding="6">
-    <tr><th>Account #</th><th>Holder</th><th>Balance</th></tr>
-    <tr><td>1001</td><td>A. Rivera</td><td>$4,231.09</td></tr>
-    <tr><td>1002</td><td>B. Chen</td><td>$812.44</td></tr>
-    <tr><td>1003</td><td>C. Okafor</td><td>$15,900.00</td></tr>
-  </table>
-  <p><a href="{{ url_for('dashboard') }}">Back to dashboard</a></p>
-</body>
-</html>
+{% extends "base.html" %}
+{% block title %}Accounts — {{ bank_name }}{% endblock %}
+{% block content %}
+<h1>Accounts</h1>
+<table class="data-table">
+  <tr><th>Account #</th><th>Holder</th><th>Balance</th></tr>
+  <tr><td>1001</td><td>A. Rivera</td><td>$4,231.09</td></tr>
+  <tr><td>1002</td><td>B. Chen</td><td>$812.44</td></tr>
+  <tr><td>1003</td><td>C. Okafor</td><td>$15,900.00</td></tr>
+</table>
+{% endblock %}

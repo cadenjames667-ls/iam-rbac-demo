@@ -1,9 +1,9 @@
-<!doctype html>
-<html>
-<head><title>Access Denied</title></head>
-<body>
-  <h1>403 - Access Denied</h1>
-  <p>You're logged in, but your role doesn't include this permission.</p>
-  <a href="{{ url_for('dashboard') }}">Back to dashboard</a>
-</body>
-</html>
+{% extends "base.html" %}
+{% block title %}Access Denied — {{ bank_name }}{% endblock %}
+{% block content %}
+<div class="auth-card">
+  <h1>403 — Access Denied</h1>
+  <p>You're signed in, but your role doesn't include this permission.</p>
+  <a class="btn btn-primary" href="{{ url_for('dashboard') }}">Back to dashboard</a>
+</div>
+{% endblock %}

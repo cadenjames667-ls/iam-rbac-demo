@@ -10,6 +10,15 @@ app = Flask(__name__)
 # Flask raises an error at runtime if this isn't set.
 app.secret_key = os.environ["FLASK_SECRET_KEY"]
 
+BANK_NAME = "Meridian Trust"
+
+@app.context_processor
+def inject_bank_name():
+    # A context processor runs before every template render and merges its
+    # returned dict into that template's variables - this is what makes
+    # {{ bank_name }} available in every template below without passing it
+    # to render_template() manually each time.
+    return {"bank_name": BANK_NAME}
 
 def get_db_connection():
     return psycopg2.connect(
@@ -174,14 +183,12 @@ def view_accounts():
 @app.route("/accounts/edit")
 @require_permission("edit_accounts")
 def edit_accounts():
-    return "<h1>Edit Accounts</h1><p>(placeholder - real editing UI comes later)</p><a href='/dashboard'>Back</a>"
-
+    return render_template("edit_accounts.html")
 
 @app.route("/transactions/approve")
 @require_permission("approve_transactions")
 def approve_transactions():
-    return "<h1>Approve Transactions</h1><p>(placeholder)</p><a href='/dashboard'>Back</a>"
-
+    return render_template("approve_transactions.html")
 
 @app.route("/audit-log")
 @require_permission("view_audit_log")
@@ -294,6 +301,6 @@ def revoke_role(user_id):
 
     return redirect(url_for("admin_users"))
 
-    
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)

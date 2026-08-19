@@ -1,20 +1,21 @@
-<!doctype html>
-<html>
-<head><title>Audit Log</title></head>
-<body>
-  <h1>Audit Log</h1>
-  <table border="1" cellpadding="6">
-    <tr><th>Time (UTC)</th><th>User</th><th>Action</th><th>Resource</th><th>Result</th></tr>
-    {% for created_at, username, action, resource, success in entries %}
-    <tr style="background-color: {{ 'transparent' if success else '#ffe0e0' }}">
-      <td>{{ created_at }}</td>
-      <td>{{ username }}</td>
-      <td>{{ action }}</td>
-      <td>{{ resource or '' }}</td>
-      <td>{{ 'success' if success else 'DENIED / FAILED' }}</td>
-    </tr>
-    {% endfor %}
-  </table>
-  <p><a href="{{ url_for('dashboard') }}">Back to dashboard</a></p>
-</body>
-</html>
+{% extends "base.html" %}
+{% block title %}Audit Log — {{ bank_name }}{% endblock %}
+{% block content %}
+<h1>Audit Log</h1>
+<table class="data-table">
+  <tr><th>Time (UTC)</th><th>User</th><th>Action</th><th>Resource</th><th>Result</th></tr>
+  {% for created_at, username, action, resource, success in entries %}
+  <tr class="{{ 'row-denied' if not success else '' }}">
+    <td>{{ created_at }}</td>
+    <td>{{ username }}</td>
+    <td>{{ action }}</td>
+    <td>{{ resource or '' }}</td>
+    <td>
+      <span class="status-pill {{ 'status-ok' if success else 'status-fail' }}">
+        {{ 'Success' if success else 'Denied / Failed' }}
+      </span>
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}

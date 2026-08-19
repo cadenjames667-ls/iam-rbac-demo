@@ -1,38 +1,36 @@
-<!doctype html>
-<html>
-<head><title>Manage User Roles</title></head>
-<body>
-  <h1>Manage User Roles</h1>
-  <table border="1" cellpadding="6">
-    <tr><th>Username</th><th>Current Roles</th><th>Assign a Role</th></tr>
-    {% for user_id, username in users %}
-    <tr>
-      <td>{{ username }}</td>
-      <td>
-        {% for role_id, role_name in roles_by_user.get(user_id, []) %}
+{% extends "base.html" %}
+{% block title %}Manage User Roles — {{ bank_name }}{% endblock %}
+{% block content %}
+<h1>Manage User Roles</h1>
+<table class="data-table">
+  <tr><th>Username</th><th>Current Roles</th><th>Assign a Role</th></tr>
+  {% for user_id, username in users %}
+  <tr>
+    <td>{{ username }}</td>
+    <td>
+      {% for role_id, role_name in roles_by_user.get(user_id, []) %}
+        <span class="role-pill">
           {{ role_name }}
-          <form method="post" action="{{ url_for('revoke_role', user_id=user_id) }}" style="display:inline">
+          <form method="post" action="{{ url_for('revoke_role', user_id=user_id) }}" class="inline-form">
             <input type="hidden" name="role_id" value="{{ role_id }}">
-            <button type="submit">Revoke</button>
+            <button type="submit" class="btn-mini">×</button>
           </form>
-          <br>
-        {% else %}
-          <em>none</em>
-        {% endfor %}
-      </td>
-      <td>
-        <form method="post" action="{{ url_for('assign_role', user_id=user_id) }}">
-          <select name="role_id">
-            {% for role_id, role_name in all_roles %}
-              <option value="{{ role_id }}">{{ role_name }}</option>
-            {% endfor %}
-          </select>
-          <button type="submit">Assign</button>
-        </form>
-      </td>
-    </tr>
-    {% endfor %}
-  </table>
-  <p><a href="{{ url_for('dashboard') }}">Back to dashboard</a></p>
-</body>
-</html>
+        </span>
+      {% else %}
+        <em class="muted">none</em>
+      {% endfor %}
+    </td>
+    <td>
+      <form method="post" action="{{ url_for('assign_role', user_id=user_id) }}" class="inline-form">
+        <select name="role_id">
+          {% for role_id, role_name in all_roles %}
+            <option value="{{ role_id }}">{{ role_name }}</option>
+          {% endfor %}
+        </select>
+        <button type="submit" class="btn btn-small">Assign</button>
+      </form>
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}
