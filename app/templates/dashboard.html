@@ -1,0 +1,26 @@
+<!doctype html>
+<html>
+<head><title>IAM/RBAC Demo - Dashboard</title></head>
+<body>
+  <h1>Welcome, {{ username }}</h1>
+  <p>Your role(s): {{ roles | join(", ") }}</p>
+
+  <!-- Every link is visible to every logged-in user, on purpose. If we hid
+       links based on role, that would just be UI decoration - a user could
+       still type the URL directly. The REAL enforcement is the
+       @require_permission decorator on the server; this nav proves it, by
+       letting you click a link you're not allowed to use and watch the
+       server block it anyway. -->
+  <nav>
+    <ul>
+      <li><a href="{{ url_for('view_accounts') }}">View Accounts</a></li>
+      <li><a href="{{ url_for('edit_accounts') }}">Edit Accounts</a></li>
+      <li><a href="{{ url_for('approve_transactions') }}">Approve Transactions</a></li>
+      <li><a href="{{ url_for('view_audit_log') }}">View Audit Log</a></li>
+      <li><a href="{{ url_for('admin_users') }}">Manage User Roles</a></li>
+    </ul>
+  </nav>
+
+  <a href="{{ url_for('logout') }}">Log out</a>
+</body>
+</html>

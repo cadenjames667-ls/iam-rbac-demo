@@ -1,0 +1,29 @@
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: ${IAM_DB_USER}
+      POSTGRES_PASSWORD: ${IAM_DB_PASSWORD}
+      POSTGRES_DB: ${IAM_DB_NAME}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./db/init:/docker-entrypoint-initdb.d
+
+  app:
+    build: ./app        # build our own image from app/Dockerfile, instead of pulling one
+    environment:
+      IAM_DB_HOST: db    # the DB's hostname on Docker's internal network is just its service name
+      IAM_DB_PORT: 5432
+      IAM_DB_USER: ${IAM_DB_USER}
+      IAM_DB_PASSWORD: ${IAM_DB_PASSWORD}
+      IAM_DB_NAME: ${IAM_DB_NAME}
+      FLASK_SECRET_KEY:
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db             # starts db's container first (doesn't wait for Postgres to be *ready*, just *started*)
+
+volumes:
+  pgdata:
